@@ -4,8 +4,11 @@ services:
       context: .
       dockerfile: apps/api/Dockerfile.dev
     volumes:
-      - .:/app
-      - /app/node_modules # prevents host from overwriting node_modules
+      - ./apps/api:/app/apps/api
+      - ./packages:/app/packages
+      - ./pnpm-workspace.yaml:/app/pnpm-workspace.yaml:ro
+      - ./package.json:/app/package.json:ro
+      - ./pnpm-lock.yaml:/app/pnpm-lock.yaml:ro
     ports:
       - "3000:3000"
     environment:
