@@ -1,0 +1,21 @@
+services:
+  api-dev:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile.dev
+    volumes:
+      - .:/app
+      - /app/node_modules # prevents host from overwriting node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+
+  api-prod:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
