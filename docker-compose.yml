@@ -13,10 +13,13 @@ services:
       - "3000:3000"
     environment:
       NODE_ENV: development
+    depends_on:
+      - database
+    networks:
+      - trading-network
 
   database:
     image: timescale/timescaledb-ha:pg17
-    container_name: trading
     restart: unless-stopped
     environment:
       POSTGRES_USER: "${DATABASE_USERNAME}"
@@ -24,9 +27,11 @@ services:
       POSTGRES_DB: "${DATABASE_NAME}"
       TZ: "UTC"
     ports:
-      - "55432:5432"
+      - "${DOCKER_DATABASE_PORT}:5432"
     volumes:
-      - ./.
+      - ./.docker/timescaledb_data:/var/lib/postgresql/data
+    networks:
+      - trading-network
 
   # api-prod:
   #   build:
@@ -36,3 +41,11 @@ services:
   #     - "3000:3000"
   #   environment:
   #     NODE_ENV: production
+  #   depends_on:
+  #     - database
+  #   networks:
+  #     - trading-network
+
+networks:
+  trading-network:
+    driver: bridge
