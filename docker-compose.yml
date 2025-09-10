@@ -23,15 +23,15 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: "${DATABASE_USERNAME}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
       POSTGRES_DB: "${DATABASE_NAME}"
       TZ: "UTC"
     ports:
       - "${DOCKER_DATABASE_PORT}:5432"
     volumes:
       - ./.docker/timescaledb_data:/var/lib/postgresql/data
-    networks:
-      - trading-network
+    # networks:
+    #   - trading-network
 
   # api-prod:
   #   build:
