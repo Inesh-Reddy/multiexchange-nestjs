@@ -14,11 +14,25 @@ services:
     environment:
       NODE_ENV: development
 
-  api-prod:
-    build:
-      context: .
-      dockerfile: apps/api/Dockerfile
-    ports:
-      - "3000:3000"
+  database:
+    image: timescale/timescaledb-ha:pg17
+    container_name: trading
+    restart: unless-stopped
     environment:
-      NODE_ENV: production
+      POSTGRES_USER: "${DATABASE_USERNAME}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${DATABASE_NAME}"
+      TZ: "UTC"
+    ports:
+      - "55432:5432"
+    volumes:
+      - ./.
+
+  # api-prod:
+  #   build:
+  #     context: .
+  #     dockerfile: apps/api/Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     NODE_ENV: production
